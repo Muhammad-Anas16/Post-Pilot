@@ -11,7 +11,7 @@ export default function ConditionalLayout({ children }) {
     <>
       {pathname === "/sign-in" || pathname === "/sign-up" ? null : <Navbar />}
       {children}
-      <Footer />
+      {pathname === "/sign-in" || pathname === "/sign-up" ? null : <Footer />}
     </>
   );
 }
