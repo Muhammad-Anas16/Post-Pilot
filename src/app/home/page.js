@@ -8,7 +8,6 @@ const home = () => {
     <div>
       <HeroSection />
       <SocialPostsSection />
-      {/* <Footer /> */}
     </div>
   );
 };
