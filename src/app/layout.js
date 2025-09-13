@@ -1,11 +1,7 @@
-"use client";
-
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Navbar from "@/component/common/Navbar";
-import Footer from "@/component/common/Footer";
-import { usePathname } from "next/navigation";
+import ConditionalLayout from "@/component/common/ConditionalLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,16 +19,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
   return (
     <ClerkProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased p-0 m-0 box-border bg-gray-50`}
         >
-          {pathname === "/sign-in" || pathname === "/sign-up" ? null : <Navbar />}
+          <ConditionalLayout>
             {children}
-          <Footer />
+          </ConditionalLayout>
         </body>
       </html>
     </ClerkProvider>
