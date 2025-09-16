@@ -9,9 +9,9 @@ export default function ConditionalLayout({ children }) {
 
   return (
     <>
-      {pathname === "/sign-in" || pathname === "/sign-up" ? null : <Navbar />}
+      {pathname === "/sign-in" || pathname === "/sign-up" || pathname === "/dashboard" ? null : <Navbar />}
       {children}
-      {pathname === "/sign-in" || pathname === "/sign-up" ? null : <Footer />}
+      {pathname === "/sign-in" || pathname === "/sign-up" || pathname === "/dashboard" ? null : <Footer />}
     </>
   );
 }
