@@ -6,7 +6,7 @@ export default function Layout({ children }) {
     <SidebarProvider defaultOpen={false}>   {/* force closed by default */}
       <AppSidebar />
       <main className="flex-1 flex flex-col gap-6 p-4">
-        <SidebarTrigger />
+        {/* <SidebarTrigger /> */} {/* For opening and closing the SideBar */}
         {children}
       </main>
     </SidebarProvider>
