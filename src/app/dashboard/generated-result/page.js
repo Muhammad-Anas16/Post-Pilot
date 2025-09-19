@@ -4,8 +4,9 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { Suspense } from "react";
 
-export default function GeneratedResult() {
+function GeneratedResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const content = searchParams.get("content");
@@ -58,5 +59,39 @@ export default function GeneratedResult() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col px-4 sm:px-8 py-10">
+      <div className="flex items-center justify-between max-w-4xl mx-auto w-full mb-6">
+        <div className="h-10 w-20 bg-gray-200 rounded animate-pulse" />
+        <h1 className="text-lg sm:text-xl font-semibold text-gray-800">
+          Social Media Post Result
+        </h1>
+        <div />
+      </div>
+      <Card className="max-w-4xl mx-auto w-full shadow-md border border-gray-200 rounded-xl">
+        <CardContent className="p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            ✨ Generated Post ✨
+          </h2>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
+            <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2" />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function GeneratedResult() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <GeneratedResultContent />
+    </Suspense>
   );
 }
