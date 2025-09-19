@@ -20,7 +20,12 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  await saveUserinMongoDB()
+  try {
+    await saveUserinMongoDB();
+  } catch (error) {
+    console.error("Error in RootLayout:", error);
+  }
+  
   return (
     <ClerkProvider>
       <html lang="en">

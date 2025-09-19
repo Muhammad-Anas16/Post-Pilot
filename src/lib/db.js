@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const DB_URL = process.env.MongoDB_URL;
+const DB_URL = process.env.MONGODB_URI || process.env.MongoDB_URL;
 
 if (!DB_URL) {
     console.log("Please add your Mongo URI to .env.local");
@@ -9,13 +9,16 @@ if (!DB_URL) {
 let isConnected = false;
 
 export const connectDB = async () => {
-    if (isConnected) return;
+    if (isConnected) {
+        return;
+    }
 
-    mongoose.connect(DB_URL)
-        .then(
-            () => console.log('✅ Mongo DB is Connected!')
-            && (isConnected = true)
-        ).catch(
-            err => console.log('❌ Mongo DB is not Connected!', err.message)
-        );
+    try {
+        await mongoose.connect(DB_URL);
+        isConnected = true;
+        console.log('✅ Mongo DB is Connected!');
+    } catch (err) {
+        console.log('❌ Mongo DB is not Connected!', err.message);
+        throw err;
+    }
 };

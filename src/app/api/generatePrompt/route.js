@@ -6,6 +6,13 @@ const groq = new Groq({
 
 export async function POST(req) {
   try {
+    if (!process.env.GROQ_API_KEY) {
+      return new Response(JSON.stringify({ error: "Groq API key not configured" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const { prompt } = await req.json();
 
     const chatCompletion = await groq.chat.completions.create({
@@ -25,7 +32,7 @@ export async function POST(req) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error in generatePrompt API:", err);
     return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

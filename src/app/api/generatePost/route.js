@@ -20,12 +20,20 @@
 import { ai } from "@/lib/gemini";
 
 export async function POST(req) {
-  const { audience, contentLength, country, socialmediaPlatform, prompt, tone } =
-    await req.json();
+  try {
+    const { audience, contentLength, country, socialmediaPlatform, prompt, tone } =
+      await req.json();
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash-lite",
-    contents: `
+    if (!process.env.GEMINI_API_KEY) {
+      return new Response(JSON.stringify({ error: "Gemini API key not configured" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents: `
 You are an expert social media strategist and copywriter. 
 Based on the following input parameters, create a complete social media posting strategy:
 
@@ -51,13 +59,20 @@ Final Output Format (always follow this structure):
 - Best Time to Post: [day(s) + time(s) + country name]
 - How to Post: [short step-by-step instructions]
 - Success Probability: [number%]
-    `,
-    config: {
-      thinkingConfig: { thinkingBudget: 0 }, // Faster, cheaper
-    },
-  });
+      `,
+      config: {
+        thinkingConfig: { thinkingBudget: 0 }, // Faster, cheaper
+      },
+    });
 
-  return new Response(JSON.stringify({ text: response.text }), {
-    headers: { "Content-Type": "application/json" },
-  });
+    return new Response(JSON.stringify({ text: response.text }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error in generatePost API:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }
