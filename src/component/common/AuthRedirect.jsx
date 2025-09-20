@@ -1,14 +1,10 @@
 "use client";
 
-import Footer from "@/component/common/Footer";
-import HeroSection from "@/component/HeroSection";
-import SocialPostsSection from "@/component/SocialPostsSection";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import React from "react";
 
-const home = () => {
+export default function AuthRedirect() {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
 
@@ -18,12 +14,5 @@ const home = () => {
     }
   }, [isSignedIn, isLoaded, router]);
 
-  return (
-    <div>
-      <HeroSection />
-      <SocialPostsSection />
-    </div>
-  );
-};
-
-export default home;
+  return null;
+}
